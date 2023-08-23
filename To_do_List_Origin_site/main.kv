@@ -33,7 +33,7 @@ MDFloatLayout:
             hint_text: "Add a task..."
             pos_hint: {"center_y": .4}
             max_text_length: 50
-            on_text_validate: (app.add_tas(task_text, date_text.text), app.close_dialog())
+            on_text_validate: (app.add_task(task_text, date_text.text), app.close_dialog())
 
         MDIconButton:
             icon: 'calendar'
