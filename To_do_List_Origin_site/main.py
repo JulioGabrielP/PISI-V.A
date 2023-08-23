@@ -3,22 +3,8 @@ from kivymd.uix.dialog import MDDialog
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.pickers import MDDatePicker
 from datetime import datetime
-
-class DialogContent(MDBoxLayout):
-    #Abre uma caixa de dialogo que recebe a tarefa do usuário
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.ids.date_text.text = str(datetime.now().strftime('%a %d %b %y'))
-    def show_date_picker(self):
-        #Mostra o seletor de data
-        date_dialog = MDDatePicker()
-        date_dialog.bind(on_save=self.on_save)
-        date_dialog.open()
-    def on_save(self, instance, value, date_range):
-        #Pega a data do seletor de datas e a converte, é um formulário mais amigável então altera o label da data para esse
-        date = value.strftime('%A %d %B %Y')
-        self.ids.date_text = str(date)
-
+from kivymd.uix.list import TwoLineAvatarIconListItem, ILeftBodyTouch
+from kivymd.uix.selectioncontrol import MDCheckbox
 
 class MainApp(MDApp):
     task_list_dialog = None
@@ -40,7 +26,45 @@ class MainApp(MDApp):
     def add_task(self, task, task_date):
         #Adicionar uma tarefa
         print(task.text, task_date)
-        task.text = '' #Torna a entrada do dalog box uma string vazia
+        self.root.ids['container'].add_widget(ListItemWithCheckbox(text = '[b]'+task.text'[/b]', secondary_text=task_date))
+        task.text = ' ' #Torna a entrada do dalog box uma string vazia
+
+class DialogContent(MDBoxLayout):
+    #Abre uma caixa de dialogo que recebe a tarefa do usuário
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.ids.date_text.text = str(datetime.now().strftime('%a %d %b %y'))
+    def show_date_picker(self):
+        #Mostra o seletor de data
+        date_dialog = MDDatePicker()
+        date_dialog.bind(on_save=self.on_save)
+        date_dialog.open()
+    def on_save(self, instance, value, date_range):
+        #Pega a data do seletor de datas e a converte, é um formulário mais amigável então altera o label da data para esse
+        date = value.strftime('%A %d %B %Y')
+        self.ids.date_text = str(date)
+class ListItemWithCheckbox(TwoLineAvatarIconListItem):
+    #Custom list item
+    def __init__(self, pk=None, **kwargs):
+        super().__init__(**kwargs)
+                #Inicia um ok que vai linkar a listem de itens com as chaves primarias do banco de dados
+        self.pk = pk
+    
+    def mark(self, check, the_list_item):
+        #Marca as tarefas como completas ou incompletas
+        if check.active == True:
+            #adiciona uma linha no texto se a caixa de marcação estiver ativa
+            the_list_item = '[s] '+the_list_item+'[/s]'
+        else:
+            #adicionar um código que remova a linha mais tarde
+            pass
+    def delete_item(self, the_list_item):
+        #Deleta tarefas
+        self.parent.remove_widget(the_list_item)
+
+class LeftCheckbox(ILeftBodyTouch, MDCheckbox):
+    #Caixinha cusmotizavel na esquerda
+
 
 if __name__=="__main__":
     app = MainApp()
