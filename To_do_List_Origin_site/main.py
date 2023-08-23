@@ -42,7 +42,7 @@ class DialogContent(MDBoxLayout):
     def on_save(self, instance, value, date_range):
         #Pega a data do seletor de datas e a converte, é um formulário mais amigável então altera o label da data para esse
         date = value.strftime('%A %d %B %Y')
-        self.ids.date_text = str(date)
+        self.ids.date_text.text  = str(date)
 
 class ListItemWithCheckbox(TwoLineAvatarIconListItem):
     '''Lista de item customizavel'''
