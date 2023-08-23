@@ -39,19 +39,19 @@ MDFloatLayout:
             icon: 'calendar'
             on_release: root.show_date_picker()
             padding: '10dp'
+            
     MDLabel:
-        spacing: '10dp'
         id: date_text
+        spacing: '10dp'
 
     BoxLayout:
         orientation: 'horizontal'
-
-    MDRaisedButton:
-        text: "SAVE"
-        on_release: app.add_task(task_text, date_text.text); app.close_dialog()
-    MDFlatButton:
-        text: 'CANCEL'
-        on_release: app.close_dialog()
+        MDRaisedButton:
+            text: "SAVE"
+            on_release: app.add_task(task_text, date_text.text); app.close_dialog()
+        MDFlatButton:
+            text: 'CANCEL'
+            on_release: app.close_dialog()
 
 <ListItemWithCheckbox>:
     id: the_list_item
